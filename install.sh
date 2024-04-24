@@ -7,32 +7,32 @@ if [ ! "$(command -v unzip)" ]; then
 fi
 
 _fetch_sources(){
-  wget -O /tmp/nanorc.zip https://github.com/galenguyer/nano-syntax-highlighting/archive/master.zip
-  mkdir -p ~/.nano/
+  wget -O /tmp/nanorc.zip https://github.com/JoonasOnatsu/nanorc-syntax-highlighting/archive/master.zip
+  mkdir -p ~/.config/nano/
 
-  cd ~/.nano/ || exit
+  cd ~/.config/nano/ || exit
   unzip -o "/tmp/nanorc.zip"
-  mv nano-syntax-highlighting-master/* ./
-  rm -rf nano-syntax-highlighting-master
+  mv nanorc-syntax-highlighting-master/* ./
+  rm -rf nanorc-syntax-highlighting-master
   rm /tmp/nanorc.zip
 }
 
 _update_nanorc(){
-  touch $NANORC_FILE
-
-  # add all includes from ~/.nano/nanorc if they're not already there
+  touch ~/.config/nano/nanorc
+      
+  # add all includes from ~/.config/nano/nanorc if they're not already there
   while read -r inc; do
       if ! grep -q "$inc" "${NANORC_FILE}"; then
           echo "$inc" >> "$NANORC_FILE"
       fi
-  done < ~/.nano/nanorc
+  done < ~/.config/nano/nanorc
 }
 
 _update_nanorc_lite(){
-  sed -i '/include "\/usr\/share\/nano\/\*\.nanorc"/i include "~\/.nano\/*.nanorc"' "${NANORC_FILE}"
+  sed -i '/include "\/usr\/share\/nano\/\*\.nanorc"/i include "~\/.config.\/nano\/*.nanorc"' "${NANORC_FILE}"
 }
 
-NANORC_FILE=~/.nanorc
+NANORC_FILE=~/.config\/nano\/nanorc
 
 case "$1" in
  -l|--lite)
